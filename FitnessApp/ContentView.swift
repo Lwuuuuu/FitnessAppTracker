@@ -6,16 +6,32 @@
 //
 
 import SwiftUI
-
+import Firebase
 struct ContentView: View {
+    @ObservedObject var viewModel = WorkoutModel()
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        TabView {
+            NavigationView {
+                workoutSelection(viewModel : self.viewModel)
+            }
+                .tabItem {
+                    Image(systemName : "heart")
+                    Text("Start Workout")
+                }
+            NavigationView {
+                EditWorkout()
+            }
+                .tabItem {
+                    Image(systemName : "square.and.pencil")
+                    Text("Edit Workout")
+                }
+        }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    @ObservedObject var viewModel = WorkoutModel()
+//    static var previews: some View {
+//        ContentView(viewModel : viewModel)
+//    }
+//}
