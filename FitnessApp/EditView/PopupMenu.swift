@@ -20,7 +20,7 @@ struct PopupMenu: View {
     @State var versionNum = 0
     var body: some View {
         ZStack() {
-            Color(red : 65/255, green : 74/255, blue : 76/255)
+            Color(red : 240/255, green : 240/255, blue : 240/255)
             VStack(alignment : .leading, spacing : 20) {
                 Button(action : {
                     viewExercises.toggle()
@@ -32,14 +32,17 @@ struct PopupMenu: View {
                     }
                     .font(.custom("Avenir Next Condensed", size : 24))
                     .frame(maxWidth : .infinity, maxHeight : 50)
+                    .padding(.leading, 5)
                 }
                 if viewExercises {
                     ForEach(superSet.keys.sorted(), id : \.self) { key in
                         HStack() {
                             Text(String(superSet[key]![1]))
                                 .background(Circle().fill(Color.black).frame(width: 30, height: 30))
-                                .padding(.leading, 20)
+                                .foregroundColor(Color.white)
+                                .padding(.leading, 25)
                             Text(key)
+                                .foregroundColor(Color.black)
                                 .padding(.leading, 10)
                             Spacer()
                         }
@@ -52,6 +55,7 @@ struct PopupMenu: View {
                 })
                 {
                     Text("Add a Superset Exercise")
+                        .padding(.leading, 5)
                 }
                 if addExercise {
                     ForEach(possibleSuperset) { possWorkout in
@@ -79,12 +83,16 @@ struct PopupMenu: View {
                 })
                 {
                     Text("Unlink Current Exercise")
+                        .foregroundColor(workout.version != 0 ? Color.black : Color.gray)
+                        .padding(.leading, 5)
+
                 }
+                .allowsHitTesting(workout.version != 0)
                 Spacer()
             }
             .padding(.top, 20)
             .allowsHitTesting(!isNew)
-            .foregroundColor(!isNew ? Color.orange : Color.gray)
+            .foregroundColor(!isNew ? Color.black : Color.gray)
             .font(.custom("Avenir Next Condensed", size : 24))
         }
         .onAppear() {
@@ -132,12 +140,12 @@ struct buttonView : View {
         {
             HStack() {
                 Text(" \(exerciseName) ")
-                    .padding(.leading, 20)
+                    .font(.custom("Avenir Next Condensed", size : 24))
+                    .background(buttonPressed ? Color.gray.opacity(0.66) : Color(red : 240/255, green : 240/255, blue : 240/255))
+                    .cornerRadius(15)
                 Spacer()
             }
-            .font(.custom("Avenir Next Condensed", size : 24))
-            .background(buttonPressed ? Color(red : 48.75/255, green : 55.5/255, blue : 57/255) : Color(red : 65/255, green : 74/255, blue : 76/255))
-            .cornerRadius(20)
+            .padding(.leading, 25)
         }
         .onAppear() {
             //If user closes popupmenu then reopens it need to maintain old button state

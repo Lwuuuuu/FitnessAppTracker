@@ -57,6 +57,7 @@ struct beginWorkout: View {
                         .frame(maxWidth : .infinity)
                 }
                 .font(.custom("Avenir Next Condensed", size : 16))
+                .padding()
                 ScrollView(.vertical) {
                     ForEach(Array(zip(workouts.indices, workouts)), id : \.0) { index, workout in
                         VStack(spacing : 0) {
@@ -64,21 +65,25 @@ struct beginWorkout: View {
                                 Text(workout.name)
                                     .font(.custom("Avenir Next Condensed", size : 16))
                                     .frame(maxWidth : .infinity)
-                                    .background(Color.orange)
                                     .foregroundColor(Color.black)
-                                    .cornerRadius(20)
+                                    .padding(.leading, 5)
                                 CustomInputTextField(text : $weights[index])
-                                    .frame(maxWidth : .infinity, minHeight : 50)
-                                    .background(workout.reps.count >= setNum ? Color(red: 55.25/255, green: 62.9/255, blue: 64.6/255) : Color.gray)
-                                    .compositingGroup()
-                                    .allowsHitTesting(!startRest && workout.reps.count >= setNum)
+                                    .background(workout.reps.count >= setNum ? Color.white : Color.gray)
+                                    .cornerRadius(15)
+                                    .overlay(RoundedRectangle(cornerRadius : 15).stroke(Color.black, lineWidth : 1))
+                                    .padding()
                                 CustomInputTextField(text : $reps[index])
-                                    .frame(maxWidth : .infinity, minHeight : 50)
-                                    .background(workout.reps.count >= setNum ? Color(red: 55.25/255, green: 62.9/255, blue: 64.6/255) : Color.gray)
-                                    .compositingGroup()
-                                    .allowsHitTesting(!startRest && workout.reps.count >= setNum)
-                                    .padding(.trailing, 2)
+                                    .background(workout.reps.count >= setNum ? Color.white : Color.gray)
+                                    .cornerRadius(15)
+                                    .overlay(RoundedRectangle(cornerRadius : 15).stroke(Color.black, lineWidth : 1))
+                                    .padding()
                             }
+                            .frame(maxWidth : .infinity, minHeight : 50)
+                            .background(Color.white)
+                            .cornerRadius(15)
+                            .padding()
+                            .compositingGroup()
+                            .allowsHitTesting(!startRest && workout.reps.count >= setNum)
                             if let prevWeight = prevWorkout[workout.name]?[0], let prevReps = prevWorkout[workout.name]?[1] {
                                 HStack() {
                                     Image(systemName : "info.circle")
@@ -286,7 +291,7 @@ struct beginWorkout: View {
                 
             }
         }
-        .background(Color(red: 65/255, green: 74/255, blue: 76/255))
+        .background(Color(red: 240/255, green: 240/255, blue: 240/255))
         .edgesIgnoringSafeArea(.all)
         .navigationBarTitle("")
         .navigationBarHidden(true)

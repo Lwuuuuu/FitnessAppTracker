@@ -13,25 +13,36 @@ struct workoutPreview : View {
     var workoutList : [Workout]
     var completedExercises : [String]
     @State var isValid = false
+    @State var numSets = 0
     var body : some View {
         ZStack {
             VStack(spacing : 0) {
                 ForEach(workoutList, id : \.self) { workout in
                     HStack() {
                         Spacer()
-                        Text(workout.name + "  ->  " + String(workout.reps.count))
-                            .foregroundColor(.white)
+                        Text(workout.name)
+                            .foregroundColor(Color.black)
                             .font(.custom("Avenir Next Condensed", size : 24))
                         Spacer()
                     }
                 }
+                Rectangle()
+                    .fill(Color.gray)
+                    .frame(width : 200, height: 1)
+                    .edgesIgnoringSafeArea(.horizontal)
+                HStack() {
+                    Image(systemName : "info.circle")
+                    Text("Total number of Sets : " + String(self.numSets))
+                }
+                .foregroundColor(Color.black)
+                .font(.custom("Avenir Next Condensed", size : 16))
             }
-            .background(Color(red: 55.25/255, green: 62.9/255, blue: 64.6/255))
-            .cornerRadius(30)
+            .background(Color.white.shadow(color: Color/*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/, radius: 1, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/))
+            .cornerRadius(15)
             if isValid {
                 Color.gray
                     .opacity(0.9)
-                    .cornerRadius(30)
+                    .cornerRadius(15)
                 VStack() {
                     Spacer()
                     Image(systemName : "checkmark.circle")
@@ -43,7 +54,15 @@ struct workoutPreview : View {
         }
         .onAppear() {
             isValid = didExercise()
+            numSets = calcSets()
         }
+    }
+    func calcSets() -> Int {
+        var ans = 0
+        for workout in workoutList {
+            ans += workout.reps.count
+        }
+        return ans
     }
     func didExercise() -> Bool {
         for workout in workoutList {
@@ -61,8 +80,8 @@ struct workoutSelection: View {
     var body: some View {
         VStack(spacing : 3) {
             HStack() {
-                Text(getTodayWeekDay())
-                    .foregroundColor(Color.orange)
+                Text(getTodayWeekDay() + " - " + self.numSets() + " Sets")
+                    .foregroundColor(Color.black)
                     .font(.custom("Avenir Next Condensed", size : 48))
                     .padding(.leading, 5)
                 Spacer()
@@ -86,16 +105,18 @@ struct workoutSelection: View {
         }
         .navigationBarHidden(true)
         .navigationBarTitle(Text("Home"))
-        .background(
-            Image("rilakkuma")
-                .resizable()
-                .scaledToFill()
-                .edgesIgnoringSafeArea(.all)
-        )
+        .background(Color(red : 240/255, green : 240/255, blue : 240/255))
         .onAppear() {
             self.viewModel.changeDay(day: getTodayWeekDay())
             self.viewModel.fetchData()
         }
+    }
+    func numSets() -> String {
+        var ans = 0
+        for workout in viewModel.workouts {
+            ans += workout.reps.count
+        }
+        return String(ans)
     }
     func getTodayWeekDay() -> String {
            let dateFormatter = DateFormatter()

@@ -40,7 +40,7 @@ struct EditView: View {
     @State var superSet = [String : [Int]]()
     var body: some View {
         ZStack() {
-            Color(red : 65/255, green : 74/255, blue : 76/255)
+            Color(red : 240/255, green : 240/255, blue : 240/255)
                 .ignoresSafeArea(.all)
             VStack(spacing : 0) {
                 VStack(spacing : -5) {
@@ -195,6 +195,7 @@ struct EditorView : View {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.black, lineWidth : 1)
                 )
+                .background(Color(red : 240/255, green : 248/255, blue : 255/255))
                 .padding()
             InputTextField(text : self.$text[2])
                 .frame(maxWidth : .infinity)
@@ -203,11 +204,14 @@ struct EditorView : View {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.black, lineWidth : 1)
                 )
+                .background(Color(red : 240/255, green : 248/255, blue : 255/255))
                 .padding()
             Spacer()
         }
         .font(.custom("Avenir Next Condensed", size : 26))
-        .listRowBackground(Color(red : 65/255, green : 74/255, blue : 76/255))
+        .cornerRadius(15)
+//        .listRowBackground(Color.white)
+//        .padding()
     }
 }
 

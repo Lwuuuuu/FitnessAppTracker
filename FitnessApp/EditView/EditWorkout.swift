@@ -17,11 +17,15 @@ struct EditWorkout: View {
     var body: some View {
         VStack() {
             HStack() {
-                ForEach(Array(zip(listDays.indices, listDays)), id : \.0) { index, data in
-                    dayofweekButton(dayList : $dayofWeek, index : index, buttonText: abbrvDays[index], chosenDay : self.$chosenDay)
+                ForEach(listDays.indices) { index in
+                    dayofweekButton(dayList : $dayofWeek, index : index, buttonText: abbrvDays[index])
                 }
             }
-            DayButton(dayChosen: listDays[chosenDay], editButton: $editButton)
+            ForEach(Array(zip(dayofWeek.indices, dayofWeek)), id : \.0) { index, data in
+                if data {
+                    DayButton(dayChosen: listDays[index], editButton: $editButton)
+                }
+            }
             Spacer()
             
         }
@@ -44,12 +48,12 @@ struct dayofweekButton : View {
     @Binding var dayList : [Bool]
     var index : Int
     var buttonText : String
-    @Binding var chosenDay : Int
+//    @Binding var chosenDay : Int
     var body : some View {
         Button(action : {
             dayList = Array(repeating: false, count: 7)
             dayList[index] = true
-            chosenDay = index
+//            chosenDay = index
         })
         {
             Text(buttonText)

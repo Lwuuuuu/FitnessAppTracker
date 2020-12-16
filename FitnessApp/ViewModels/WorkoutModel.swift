@@ -25,7 +25,7 @@ class WorkoutModel : ObservableObject {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
         let result = formatter.string(from : date)
-        db.collection("user/user1/completedWorkouts").getDocuments() { (QuerySnapshot, err) in
+        db.collection("users/user1/completedWorkouts").getDocuments() { (QuerySnapshot, err) in
             if let err = err {
                 print("Error getting docs : \(err)")
             }
