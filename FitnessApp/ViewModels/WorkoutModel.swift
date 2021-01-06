@@ -60,6 +60,34 @@ class WorkoutModel : ObservableObject {
         return ans
     }
     
+    func restTime(exerciseList : [Workout], curSet : Int)  -> Int {
+        if exerciseList.count == 1 {
+            return Int(exerciseList[0].rest[curSet - 1])!
+        }
+        else {
+            var foundExercise = false
+            var index = 0
+            var restTime = 0
+            var exerciseNum = exerciseList.count
+            while !foundExercise && index < exerciseList.count {
+                if exerciseList[index].order == exerciseNum {
+                    if exerciseList[index].rest.count >= curSet {
+                        restTime = Int(exerciseList[index].rest[curSet - 1])!
+                        foundExercise = true
+                    }
+                    else {
+                        index = 0
+                        exerciseNum -= 1
+                    }
+                }
+                else {
+                    index += 1
+                }
+            }
+            return restTime
+        }
+    }
+    
     func populateSuperset(num : Int) -> [String : [Int]] {
         var ans = [String : [Int]]()
         for workout in workouts {

@@ -78,45 +78,35 @@ struct workoutPreview : View {
 struct workoutSelection: View {
     @ObservedObject var viewModel : WorkoutModel
     var body: some View {
-        VStack(spacing : 3) {
-            HStack() {
-                Text(getTodayWeekDay() + " - " + self.numSets() + " Sets")
-                    .foregroundColor(Color.black)
-                    .font(.custom("Avenir Next Condensed", size : 48))
-                    .padding(.leading, 5)
-                Spacer()
-            }
-            Rectangle()
-                .fill(Color.gray)
-                .frame(maxWidth : .infinity, maxHeight: 2)
-                .edgesIgnoringSafeArea(.horizontal)
-            ScrollView(.vertical) {
-                VStack(spacing : 20) {
-                    ForEach(viewModel.orderedExercises(), id : \.self) { element in
-                        NavigationLink(destination : beginWorkout(timeRemaining: 120, setNum: 1, workouts: element, model: viewModel))
-                        {
-                            workoutPreview(workoutList : element, completedExercises : self.viewModel.completedWorkouts)
+        ZStack {
+            Color(red : 240/255, green : 240/255, blue : 240/255)
+                .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            VStack(spacing : 3) {
+                DropDownMenu(viewModel: viewModel, currentDay: getTodayWeekDay())
+                Rectangle()
+                    .fill(Color.gray)
+                    .frame(maxWidth : .infinity, maxHeight: 2)
+                    .edgesIgnoringSafeArea(.horizontal)
+                ScrollView(.vertical) {
+                    VStack(spacing : 20) {
+                        ForEach(viewModel.orderedExercises(), id : \.self) { element in
+                            NavigationLink(destination : beginWorkout(timeRemaining: viewModel.restTime(exerciseList: element, curSet: 1), setNum: 1, workouts: element, model : viewModel))
+                            {
+                                workoutPreview(workoutList : element, completedExercises : self.viewModel.completedWorkouts)
+                            }
                         }
                     }
+                    .padding()
                 }
-                .padding()
+                Spacer()
             }
-            Spacer()
+            .navigationBarHidden(true)
+            .navigationBarTitle(Text("Home"))
         }
-        .navigationBarHidden(true)
-        .navigationBarTitle(Text("Home"))
-        .background(Color(red : 240/255, green : 240/255, blue : 240/255))
         .onAppear() {
             self.viewModel.changeDay(day: getTodayWeekDay())
             self.viewModel.fetchData()
         }
-    }
-    func numSets() -> String {
-        var ans = 0
-        for workout in viewModel.workouts {
-            ans += workout.reps.count
-        }
-        return String(ans)
     }
     func getTodayWeekDay() -> String {
            let dateFormatter = DateFormatter()
@@ -127,8 +117,58 @@ struct workoutSelection: View {
 }
 
 
-//struct workoutSelection_Previews: PreviewProvider {
-//    static var previews: some View {
-//        workoutSelection()
-//    }
-//}
+struct DropDownMenu : View {
+    let daysofWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    @ObservedObject var viewModel : WorkoutModel
+    @State var currentDay : String
+    @State var expand = false
+    var body : some View {
+        VStack {
+            HStack {
+                Button(action : {
+                    withAnimation {
+                        self.expand.toggle()
+                    }
+                })
+                {
+                    HStack() {
+                        Text(currentDay)
+                            .padding(.leading, 5)
+                    }
+                }
+                Spacer()
+                Text(self.numSets() + " Sets")
+            }
+            .foregroundColor(Color.black)
+            .font(.custom("Avenir Next Condensed", size : 48))
+            ForEach(daysofWeek, id : \.self) { day in
+                if day != currentDay && expand {
+                    Button(action : {
+                        withAnimation {
+                            self.currentDay = day
+                            self.viewModel.changeDay(day: day)
+                            self.viewModel.fetchData()
+                            self.expand.toggle()
+                        }
+                    })
+                    {
+                        HStack {
+                            Text(day)
+                                .foregroundColor(Color.black)
+                                .font(.custom("Avenir Next Condensed", size : 48))
+                                .padding(.leading, 5)
+                            Spacer()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    func numSets() -> String {
+        var ans = 0
+        for workout in viewModel.workouts {
+            ans += workout.reps.count
+        }
+        return String(ans)
+    }
+}

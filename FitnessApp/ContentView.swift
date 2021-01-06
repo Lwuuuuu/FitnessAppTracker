@@ -25,6 +25,10 @@ struct ContentView: View {
                     Image(systemName : "square.and.pencil")
                     Text("Edit Workout")
                 }
+            InputView()
+            .tabItem {
+                Text("Progress Report")
+            }
         }
     }
 }

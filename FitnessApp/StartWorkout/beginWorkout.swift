@@ -196,11 +196,15 @@ struct beginWorkout: View {
                                         Image(systemName : "square.and.pencil")
                                         Text("Edit Workout")
                                     }
+                                InputView()
+                                .tabItem {
+                                    Text("Progress Report")
+                                }
                             }
                             
                         }
                         else {
-                            beginWorkout(timeRemaining: 120, setNum: setNum + 1, workouts: self.workouts, model: self.model)
+                            beginWorkout(timeRemaining: self.model.restTime(exerciseList : workouts, curSet : setNum + 1), setNum: setNum + 1, workouts: self.workouts, model: self.model)
                         }
                     }
                 }
@@ -220,6 +224,7 @@ struct beginWorkout: View {
                         }
                     }
                 Button(action : {
+                    self.updateData()
                     nextExercise.toggle()
                     if setNum == maxSet(workouts) {
                         self.finishedExercises()
@@ -262,10 +267,14 @@ struct beginWorkout: View {
                                     Image(systemName : "square.and.pencil")
                                     Text("Edit Workout")
                                 }
+                            InputView()
+                            .tabItem {
+                                Text("Progress Report")
+                            }
                         }
                     }
                     else {
-                        beginWorkout(timeRemaining: 120, setNum: setNum + 1, workouts: self.workouts, model: self.model)
+                        beginWorkout(timeRemaining: self.model.restTime(exerciseList : workouts, curSet : setNum + 1), setNum: setNum + 1, workouts: self.workouts, model: self.model)
                     }
                 }
                 Spacer()
@@ -283,12 +292,12 @@ struct beginWorkout: View {
                         tempReps.append("")
                     }
                 }
+                //Populate weights and reps with the default size and elements
+                weights = tempWeight
+                reps = tempReps
                 self.prevData() { res in
                     self.prevWorkout = res
                 }
-                weights = tempWeight
-                reps = tempReps
-                
             }
         }
         .background(Color(red: 240/255, green: 240/255, blue: 240/255))
@@ -373,8 +382,16 @@ struct beginWorkout: View {
         for (index, workout) in workouts.enumerated() {
             //If this exercise had a set for the current setNumber
             if reps[index] != "" {
+                let db = Firestore.firestore()
                 let isSuperset = workout.version == 0 ? false : true
-                Firestore.firestore().collection("users/user1/workoutData/" + workout.name + "/prevData").document(String(NSDate().timeIntervalSince1970)).setData([
+                db.collection("users/user1/workoutData").document(workout.name).getDocument() { (doc, err) in
+                    if let doc = doc, doc.exists {}
+                    else {
+                        db.collection("users/user1/workoutData").document(workout.name).setData(["foo" : "1"])
+                    }
+                }
+                
+                db.collection("users/user1/workoutData/" + workout.name + "/prevData").document(String(NSDate().timeIntervalSince1970)).setData([
                     "isSuperSet" : isSuperset,
                     "weight" : weights[index],
                     "reps" : reps[index],
