@@ -19,7 +19,7 @@ Shows todays workout with the total number of sets to be done. Grouped together 
 
 For each exercise in the selected exercise grouping it will show the previous weights and reps done for that exercise. After completing the exercises you start the rest period by pressing the down button.
 
-![alt text](https://github.com/Lwuuuuu/FitnessAppTracker/blob/main/Assets/Workout.PNG?raw=true)
+![alt text](https://github.com/Lwuuuuu/FitnessAppTracker/blob/main/Assets/Workout.png?raw=true)
 
 
 Workout selection to see the progress for the selected workout. Filtering by weight and reps not yet supported, will only show overview for all data for the selected exercise.
@@ -27,6 +27,6 @@ Workout selection to see the progress for the selected workout. Filtering by wei
 ![alt text](https://github.com/Lwuuuuu/FitnessAppTracker/blob/main/Assets/WorkoutPicker.png?raw=true)
 
 Graph showing the progress of weight/difficulty over time. Able to slide across the graph to see overall weight/difficulty and individual weight and reps done for a specific date.
-![alt text](https://github.com/Lwuuuuu/FitnessAppTracker/blob/main/Assets/WorkoutGraph.PNG?raw=true)
+![alt text](https://github.com/Lwuuuuu/FitnessAppTracker/blob/main/Assets/WorkoutGraph.png?raw=true)
 
 
