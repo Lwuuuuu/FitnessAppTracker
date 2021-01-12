@@ -27,6 +27,7 @@ Workout selection to see the progress for the selected workout. Filtering by wei
 ![alt text](https://github.com/Lwuuuuu/FitnessAppTracker/blob/main/Assets/WorkoutPicker.png?raw=true)
 
 Graph showing the progress of weight/difficulty over time. Able to slide across the graph to see overall weight/difficulty and individual weight and reps done for a specific date.
+
 ![alt text](https://github.com/Lwuuuuu/FitnessAppTracker/blob/main/Assets/WorkoutGraph.PNG?raw=true)
 
 
