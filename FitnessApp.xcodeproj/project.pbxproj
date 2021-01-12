@@ -24,9 +24,10 @@
 		766AF60C2575EAAE0053DD85 /* SetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766AF60B2575EAAE0053DD85 /* SetData.swift */; };
 		766AF60F2575EB3B0053DD85 /* SetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766AF60E2575EB3B0053DD85 /* SetModel.swift */; };
 		7675D645258AC5F5003CF418 /* RangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675D644258AC5F5003CF418 /* RangeView.swift */; };
-		7681516225A656B8007C0285 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 7681516125A656B8007C0285 /* SwiftUICharts */; };
 		7681516925A65A0E007C0285 /* LineGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7681516825A65A0E007C0285 /* LineGraph.swift */; };
+		769495D525A6BF85000DC704 /* ExerciseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769495D425A6BF85000DC704 /* ExerciseData.swift */; };
 		76A51F222571EFAB005FF3EC /* PopupMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A51F212571EFAB005FF3EC /* PopupMenu.swift */; };
+		76E5405D25A6D5080050D622 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = 76E5405C25A6D5080050D622 /* SwiftUICharts */; };
 		76EE261925586B8A0045CD30 /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE261825586B8A0045CD30 /* EditView.swift */; };
 		76EE261D2559D2520045CD30 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE261C2559D2520045CD30 /* ButtonView.swift */; };
 		76EE26352560B9090045CD30 /* workoutSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE26342560B9080045CD30 /* workoutSelection.swift */; };
@@ -54,6 +55,7 @@
 		766AF60E2575EB3B0053DD85 /* SetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetModel.swift; sourceTree = "<group>"; };
 		7675D644258AC5F5003CF418 /* RangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeView.swift; sourceTree = "<group>"; };
 		7681516825A65A0E007C0285 /* LineGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraph.swift; sourceTree = "<group>"; };
+		769495D425A6BF85000DC704 /* ExerciseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExerciseData.swift; path = ../../../../../../.Trash/ExerciseData.swift; sourceTree = "<group>"; };
 		76A51F212571EFAB005FF3EC /* PopupMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupMenu.swift; sourceTree = "<group>"; };
 		76EE261825586B8A0045CD30 /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
 		76EE261C2559D2520045CD30 /* ButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
@@ -69,7 +71,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C43A4AFC8D9E385AA0917553 /* Pods_FitnessApp.framework in Frameworks */,
-				7681516225A656B8007C0285 /* SwiftUICharts in Frameworks */,
+				76E5405D25A6D5080050D622 /* SwiftUICharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +90,7 @@
 		76223348255367480070E571 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				769495D425A6BF85000DC704 /* ExerciseData.swift */,
 				76223349255367700070E571 /* Workout.swift */,
 				766AF60B2575EAAE0053DD85 /* SetData.swift */,
 			);
@@ -200,7 +203,7 @@
 			);
 			name = FitnessApp;
 			packageProductDependencies = (
-				7681516125A656B8007C0285 /* SwiftUICharts */,
+				76E5405C25A6D5080050D622 /* SwiftUICharts */,
 			);
 			productName = FitnessApp;
 			productReference = 76EFF2932581A4D100E42334 /* FitnessApp.app */;
@@ -311,6 +314,7 @@
 				763A8C27258A90B500DEF2C5 /* CustomPickerView.swift in Sources */,
 				764638AB254CAFDE00A23505 /* ContentView.swift in Sources */,
 				766AF60F2575EB3B0053DD85 /* SetModel.swift in Sources */,
+				769495D525A6BF85000DC704 /* ExerciseData.swift in Sources */,
 				7622334625535EA50070E571 /* DayButton.swift in Sources */,
 				764CA4D5257C2B8900057FDE /* EditWorkout.swift in Sources */,
 				76A51F222571EFAB005FF3EC /* PopupMenu.swift in Sources */,
@@ -532,7 +536,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7681516125A656B8007C0285 /* SwiftUICharts */ = {
+		76E5405C25A6D5080050D622 /* SwiftUICharts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7681516025A656B8007C0285 /* XCRemoteSwiftPackageReference "ChartView" */;
 			productName = SwiftUICharts;

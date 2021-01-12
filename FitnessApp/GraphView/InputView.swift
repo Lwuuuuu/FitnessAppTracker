@@ -64,7 +64,7 @@ struct InputView: View {
                         .padding()
                 }
                 .sheet(isPresented : $calculatePressed) {
-                    LineGraph(name : chosenExercise, weights : weightRange, reps : repRange) 
+                    LineGraph(name : chosenExercise, weights : weightRange, reps : repRange)
                 }
                 Spacer()
             }
