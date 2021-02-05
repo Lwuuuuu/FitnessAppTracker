@@ -48,17 +48,19 @@ struct EditView: View {
                         if model.name == "" {
                             TextField("New Exercise", text : $newName)
                                 .background(Color(red : 85/255, green : 85/255, blue : 85/255))
+                                .padding(.bottom, 5)
+                                .frame(maxWidth : .infinity)
                                 
                         }
                         else {
                             Text(model.name)
                                 .foregroundColor(Color.gray)
+                                .padding(.leading, 10)
                         }
                         Spacer()
                     }
                     .font(.custom("Avenir Next Condensed", size : 36))
                     .multilineTextAlignment(.leading)
-                    .padding(.leading, 10)
                     Rectangle()
                         .fill(Color.orange)
                         .frame(maxWidth : .infinity, maxHeight: 2)

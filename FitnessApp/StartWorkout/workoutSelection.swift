@@ -90,9 +90,17 @@ struct workoutSelection: View {
                 ScrollView(.vertical) {
                     VStack(spacing : 20) {
                         ForEach(viewModel.orderedExercises(), id : \.self) { element in
-                            NavigationLink(destination : beginWorkout(timeRemaining: viewModel.restTime(exerciseList: element, curSet: 1), setNum: 1, workouts: element, model : viewModel))
-                            {
-                                workoutPreview(workoutList : element, completedExercises : self.viewModel.completedWorkouts)
+                            if let leftoverName = inLeftover(exerciseSet : element) {
+                                NavigationLink(destination : beginWorkout(timeRemaining: viewModel.restTime(exerciseList: element, curSet: self.viewModel.leftoverWorkouts[leftoverName]!), setNum: self.viewModel.leftoverWorkouts[leftoverName]!, workouts: element, model : viewModel))
+                                {
+                                    workoutPreview(workoutList : element, completedExercises : self.viewModel.completedWorkouts)
+                                }
+                            }
+                            else {
+                                NavigationLink(destination : beginWorkout(timeRemaining: viewModel.restTime(exerciseList: element, curSet: 1), setNum: 1, workouts: element, model : viewModel))
+                                {
+                                    workoutPreview(workoutList : element, completedExercises : self.viewModel.completedWorkouts)
+                                }
                             }
                         }
                     }
@@ -104,8 +112,8 @@ struct workoutSelection: View {
             .navigationBarTitle(Text("Home"))
         }
         .onAppear() {
-            self.viewModel.changeDay(day: getTodayWeekDay())
-            self.viewModel.fetchData()
+//            self.viewModel.changeDay(day: getTodayWeekDay())
+//            self.viewModel.fetchData()
         }
     }
     func getTodayWeekDay() -> String {
@@ -114,6 +122,14 @@ struct workoutSelection: View {
            let weekDay = dateFormatter.string(from: Date())
            return weekDay
      }
+    func inLeftover(exerciseSet : [Workout]) -> String? {
+        for exercise in exerciseSet {
+            if self.viewModel.leftoverWorkouts.keys.contains(exercise.name) {
+                return exercise.name
+            }
+        }
+        return nil
+    }
 }
 
 

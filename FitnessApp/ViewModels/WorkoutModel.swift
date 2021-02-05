@@ -13,13 +13,53 @@ class WorkoutModel : ObservableObject {
     var prevWorkout : [String : Any] = [:]
     @Published var workouts = [Workout]()
     @Published var completedWorkouts = [String]()
+    @Published var leftoverWorkouts = Dictionary<String, Int>()
     private var db = Firestore.firestore()
     var topNum : Int = 0
     init() {
         self.cleanseCompletion()
         self.completedExercises()
+        self.changeDay(day: self.getTodayWeekDay())
+        self.fetchData()
     }
     
+    func getTodayWeekDay() -> String {
+           let dateFormatter = DateFormatter()
+           dateFormatter.dateFormat = "EEEE"
+           let weekDay = dateFormatter.string(from: Date())
+           return weekDay
+     }
+    func findExerciseSet(exerciseName : String) -> [Workout]? {
+        let exerciseList = self.orderedExercises()
+        for exerciseSet in exerciseList {
+            for exercise in exerciseSet {
+                if exercise.name == exerciseName {
+                    return exerciseSet
+                }
+            }
+        }
+        return nil
+    }
+    
+    func updateLeftovers(name : String, set : Int, finished : Bool) {
+        if finished {
+            self.leftoverWorkouts.removeValue(forKey: name)
+        }
+        else {
+            self.leftoverWorkouts[name] = set
+        }
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        let result = formatter.string(from : date)
+        Firestore.firestore().collection("users/user1/completedWorkouts").document(result).updateData([
+            "leftovers" : self.leftoverWorkouts
+        ]) { err in
+            if let err = err {
+                print("Error updating leftover exercise field \(err)")
+            }
+        }
+    }
     func cleanseCompletion() {
         let date = Date()
         let formatter = DateFormatter()
@@ -62,6 +102,8 @@ class WorkoutModel : ObservableObject {
     
     func restTime(exerciseList : [Workout], curSet : Int)  -> Int {
         if exerciseList.count == 1 {
+            print(exerciseList[0].name)
+            print(curSet)
             return Int(exerciseList[0].rest[curSet - 1])!
         }
         else {
@@ -178,7 +220,13 @@ class WorkoutModel : ObservableObject {
                 print("Document empty")
                 return
             }
-            self.completedWorkouts = data["data"] as! [String]
+            if let temp = data["data"] {
+                self.completedWorkouts = temp as! [String]
+            }
+            let dict = data["leftovers"] as? [String : Int] ?? [:]
+            for exercise in dict.keys {
+                self.leftoverWorkouts[exercise] = dict[exercise]
+            }
         }
     }
     

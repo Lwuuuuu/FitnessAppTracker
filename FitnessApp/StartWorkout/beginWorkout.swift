@@ -26,9 +26,11 @@ struct beginWorkout: View {
     // Confirm button will be tappable and blue background when both startTimer and timerFinished are true
     @State var timerFinished = false
     @State private var isActive = true
+    @State var homePressed = false
     @State var leaveApp = NSDate().timeIntervalSince1970
     @State var timeRemaining : Int
     let timer = Timer.publish(every : 1, on : .main, in : .common).autoconnect()
+    let defaults = UserDefaults.standard
     var setNum : Int
     var workouts : [Workout]
     @ObservedObject var model : WorkoutModel
@@ -39,6 +41,7 @@ struct beginWorkout: View {
                     Spacer()
                     Text("Set : " + String(setNum))
                         .font(.custom("Avenir Next Condensed", size : 36))
+                        .padding(.trailing, 20)
                     Spacer()
                 }
                 .padding(.top, 50)
@@ -164,6 +167,9 @@ struct beginWorkout: View {
                         timeRemaining = 0
                         if setNum == maxSet(workouts) {
                             self.finishedExercises()
+                            self.model.updateLeftovers(name : self.workouts[0].name, set : setNum, finished : true)
+                            defaults.set("None", forKey: "name")
+                            defaults.set(1, forKey : "set")
                         }
                     }) {
                         HStack() {
@@ -198,6 +204,7 @@ struct beginWorkout: View {
                                     }
                                 InputView()
                                 .tabItem {
+                                    Image(systemName : "chart.bar")
                                     Text("Progress Report")
                                 }
                             }
@@ -227,7 +234,10 @@ struct beginWorkout: View {
                     self.updateData()
                     nextExercise.toggle()
                     if setNum == maxSet(workouts) {
+                        self.model.updateLeftovers(name : self.workouts[0].name, set : setNum, finished : true)
                         self.finishedExercises()
+                        defaults.set("", forKey: "name")
+                        defaults.set(-1, forKey : "set")
                     }
                 }) {
                     HStack() {
@@ -247,7 +257,6 @@ struct beginWorkout: View {
                     .cornerRadius(10)
                     .foregroundColor(Color.black)
                     .padding(.top, 10)
-                    .padding(.bottom, 50)
                 }
                 .allowsHitTesting(startTimer && timerFinished)
                 .fullScreenCover(isPresented : $nextExercise) {
@@ -269,6 +278,7 @@ struct beginWorkout: View {
                                 }
                             InputView()
                             .tabItem {
+                                Image(systemName : "chart.bar")
                                 Text("Progress Report")
                             }
                         }
@@ -279,9 +289,58 @@ struct beginWorkout: View {
                 }
                 Spacer()
             }
+            HStack {
+                Spacer()
+                Button(action : {
+                    self.homePressed = true
+                    self.model.updateLeftovers(name : self.workouts[0].name, set : setNum, finished : false)
+                    defaults.set("None", forKey: "name")
+                    defaults.set(1, forKey : "set")
+                    
+                }) {
+                    VStack {
+                        Image(systemName : "house.fill")
+                            .font(.system(size : 36))
+                        Text("Home")
+
+                    }
+                    .padding()
+                    .clipShape(Circle())
+                    .shadow(radius : 2)
+                    .overlay(Circle().stroke(Color.black, lineWidth : 1))
+                }
+                Spacer()
+            }
+            .padding(.bottom, 100)
+            .fullScreenCover(isPresented : $homePressed) {
+                TabView {
+                    NavigationView {
+                        workoutSelection(viewModel : self.model)
+                    }
+                        .tabItem {
+                            Image(systemName : "heart")
+                            Text("Start Workout")
+                        }
+                    NavigationView {
+                        EditWorkout()
+                    }
+                        .tabItem {
+                            Image(systemName : "square.and.pencil")
+                            Text("Edit Workout")
+                        }
+                    InputView()
+                    .tabItem {
+                        Image(systemName : "chart.bar")
+                        Text("Progress Report")
+                    }
+                }
+            }
+            Spacer()
             .onAppear() {
                 var tempWeight = [String]()
                 var tempReps = [String]()
+                defaults.set(workouts[0].name, forKey: "name")
+                defaults.set(setNum, forKey : "set")
                 for workout in workouts {
                     if workout.reps.count >= setNum {
                         tempWeight.append("")
@@ -480,5 +539,11 @@ struct CustomInputTextField : UIViewRepresentable {
             owner.textField.resignFirstResponder()
         }
 
+    }
+}
+
+struct beginWorkout_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
     }
 }

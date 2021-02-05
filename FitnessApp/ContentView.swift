@@ -9,25 +9,59 @@ import SwiftUI
 import Firebase
 struct ContentView: View {
     @ObservedObject var viewModel = WorkoutModel()
+    let defaults = UserDefaults.standard
+    let prevExercise = UserDefaults.standard.string(forKey : "name")
     var body: some View {
-        TabView {
-            NavigationView {
-                workoutSelection(viewModel : self.viewModel)
+        if prevExercise != "None" && prevExercise != nil{
+            let setNumber = defaults.integer(forKey: "set")
+            if let exerciseSet = self.viewModel.findExerciseSet(exerciseName: prevExercise!) {
+                beginWorkout(timeRemaining: viewModel.restTime(exerciseList: exerciseSet, curSet: setNumber), setNum: setNumber, workouts : exerciseSet, model : viewModel)
             }
-                .tabItem {
-                    Image(systemName : "heart")
-                    Text("Start Workout")
+            else {
+                TabView {
+                    NavigationView {
+                        workoutSelection(viewModel : self.viewModel)
+                    }
+                        .tabItem {
+                            Image(systemName : "heart")
+                            Text("Start Workout")
+                        }
+                    NavigationView {
+                        EditWorkout()
+                    }
+                        .tabItem {
+                            Image(systemName : "square.and.pencil")
+                            Text("Edit Workout")
+                        }
+                    InputView()
+                    .tabItem {
+                        Image(systemName : "chart.bar")
+                        Text("Progress Report")
+                    }
                 }
-            NavigationView {
-                EditWorkout()
             }
-                .tabItem {
-                    Image(systemName : "square.and.pencil")
-                    Text("Edit Workout")
+        }
+        else {
+            TabView {
+                NavigationView {
+                    workoutSelection(viewModel : self.viewModel)
                 }
-            InputView()
-            .tabItem {
-                Text("Progress Report")
+                    .tabItem {
+                        Image(systemName : "heart")
+                        Text("Start Workout")
+                    }
+                NavigationView {
+                    EditWorkout()
+                }
+                    .tabItem {
+                        Image(systemName : "square.and.pencil")
+                        Text("Edit Workout")
+                    }
+                InputView()
+                .tabItem {
+                    Image(systemName : "chart.bar")
+                    Text("Progress Report")
+                }
             }
         }
     }
@@ -39,3 +73,4 @@ struct ContentView: View {
 //        ContentView(viewModel : viewModel)
 //    }
 //}
+
