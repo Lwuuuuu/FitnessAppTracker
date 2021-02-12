@@ -129,6 +129,6 @@ struct LineGraph: View {
 
 struct LineGraph_Previews: PreviewProvider {
     static var previews: some View {
-        LineGraph(name : "hello", weights : ["1", "2"], reps : ["10, 20"])
+        LineGraph(name : "", weights : ["1", "2"], reps : ["10, 20"])
     }
 }
